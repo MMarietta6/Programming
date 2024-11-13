@@ -1,0 +1,104 @@
+#include <stdio.h>
+
+#define MAX_STUDENTS 100
+
+/*Task: Stipendiumide määramine õpilaste keskmiste hinnete alusel, sordib nad kahanevas järjekorras, seejärel stipendiumi
+300eur saavad esimesed kolm ja järmised kolm saavad 100eur stipendiumit, järgmised enam ei saa.*/
+
+/* Blackboxile andsin oma ülesande kirjelduse, oma maini ja prototüübid, seejärel palusin tal 
+lõpetada koodi, lisades funktsioonid. Pidin lisaks ka juurde paluma kontrolli, mis tagaks, et sisestatud õpilaste arv
+ei ületa 100 (vahemik on 10-100) */
+
+int AskForNumberOfStudents();
+void AskForStudentValues(int N, int codes[], float averages[]);
+void SortStudents(int N, int codes[], float averages[]);
+void AssignScholarships(int N, int codes[], float averages[], int scholarships[]);
+void OutputResults(int N, int codes[], int scholarships[]);
+
+int main(void) {
+    int N = AskForNumberOfStudents();
+    int codes[MAX_STUDENTS];
+    float averages[MAX_STUDENTS];
+
+    AskForStudentValues(N, codes, averages);
+    SortStudents(N, codes, averages);
+
+    int scholarships[MAX_STUDENTS];
+    AssignScholarships(N, codes, averages, scholarships);
+    OutputResults(N, codes, scholarships);
+
+    return 0;
+}
+
+int AskForNumberOfStudents() {
+    int N;
+    do {
+        printf("Sisestage õpilaste arv (peab olema suurem kui 10 ja väiksem või võrdne %d): ", MAX_STUDENTS);
+        scanf("%d", &N);
+        
+        if (N <= 10) {
+            printf("Õpilaste arv peab olema suurem kui 10. Palun proovige uuesti.\n");
+        } else if (N > MAX_STUDENTS) {
+            printf("Õpilaste arv ei tohi ületada %d. Palun proovige uuesti.\n", MAX_STUDENTS);
+        }
+    } while (N <= 10 || N > MAX_STUDENTS);
+    
+    return N;
+}
+
+void AskForStudentValues(int N, int codes[], float averages[]) {
+    for (int i = 0; i < N; i++) {
+        int grades[2];
+        float sum = 0;
+
+        printf("Sisestage õpilase kood: ");
+        scanf("%d", &codes[i]);
+
+        for (int j = 0; j < 2; j++) {
+            do {
+                printf("Sisestage hinne (1-5): ");
+                scanf("%d", &grades[j]);
+            } while (grades[j] < 1 || grades[j] > 5);
+            sum += grades[j];
+        }
+
+        averages[i] = sum / 2; // Arvutan keskmise kahe hinde põhjal
+    }
+}
+
+void SortStudents(int N, int codes[], float averages[]) {
+    for (int i = 0; i < N - 1; i++) {
+        for (int j = 0; j < N - i - 1; j++) {
+            if (averages[j] < averages[j + 1]) {
+                // Swap averages
+                float tempAvg = averages[j];
+                averages[j] = averages[j + 1];
+                averages[j + 1] = tempAvg;
+
+                // Swap codes
+                int tempCode = codes[j];
+                codes[j] = codes[j + 1];
+                codes[j + 1] = tempCode;
+            }
+        }
+    }
+}
+
+void AssignScholarships(int N, int codes[], float averages[], int scholarships[]) {
+    for (int i = 0; i < N; i++) {
+        if (i < 3) {
+            scholarships[i] = 300; // Esimesed kolm õpilast
+        } else if (i < 6) {
+            scholarships[i] = 100; // Järgmised kolm õpilast
+        } else {
+            scholarships[i] = 0; // Ülejäänud õpilased
+        }
+    }
+}
+
+void OutputResults(int N, int codes[], int scholarships[]) {
+    printf("Stipendiumite määramine:\n");
+    for (int i = 0; i < N; i++) {
+        printf("Õpilase kood: %d, Stipendium: %d eurot\n", codes[i], scholarships[i]);
+    }
+}
