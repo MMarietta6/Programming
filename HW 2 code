@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <math.h>
+#include <ctype.h>
 
 // Prototypes
-int numberInput();
+int numberInput(char[]);
 void elementsInput(int n, float A[]);
 float arithmeticMean(int n, float A[]);
 void findMinDiff(int n, float A[], float aritm_mean, float *closest_value, int *closest_index);
@@ -16,7 +19,7 @@ int main() {
     int closest_index;
 
     // Input number of elements
-    n = numberInput();
+    n = numberInput("Enter the integer number of elements of the array A (1 < n < 20): ");
 
     // Declare the array
     float A[n];
@@ -37,12 +40,32 @@ int main() {
 }
 
 // Function to input the number of elements
-int numberInput() {
+int numberInput(char message[]) {
+    char input[100]; // Buffer to hold user input
     int n;
+    int valid;
+
     do {
-        printf("Enter the number of elements (2 < n < 20): ");
-        scanf("%d", &n);
-    } while (n <= 2 || n >= 20);
+        printf("%s", message);
+        fgets(input, sizeof(input), stdin); // Read input as a string
+
+        // Check if the input is a valid integer
+        valid = 1; // Assume valid until proven otherwise
+        for (int i = 0; input[i] != '\0' && input[i] != '\n'; i++) {
+            if (!isdigit(input[i]) && !(i == 0 && input[i] == '-')) { // Allow negative sign for the first character
+                valid = 0; // Not a valid integer
+                break;
+            }
+        }
+
+        if (valid) {
+            n = atoi(input); // Convert to integer
+        } else {
+            n = -1; // Set to an invalid number
+        }
+
+    } while (n <= 1 || n >= 20 || !valid); // Check range and validity
+
     return n;
 }
 
