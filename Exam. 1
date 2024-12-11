@@ -52,6 +52,11 @@ void GenerateMatrix(int A[ROWS][COLUMNS], int maxValue) {
             A[i][j] = rand() % maxValue; // Fill the matrix with random values less than maxValue
         }
     }
+    
+    // Ensure at least one number is larger than N
+    int row = rand() % ROWS; // Randomly select a row
+    int col = rand() % COLUMNS; // Randomly select a column
+    A[row][col] = maxValue + rand() % 10; // Set this element to a value greater than N
 }
 
 // Function to find the sum of elements in each column that are less than N
