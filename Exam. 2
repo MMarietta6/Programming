@@ -1,0 +1,76 @@
+#include <stdio.h>
+
+int AskForMatrixDimension(char[]);
+void AskForMatrixValues(int n, int m, int matrixA[][n], char* message);
+void GetAverageOfRows(int m, int n, int matrixA[][n], float averages[]);
+void SortArray(float arr[], int size);
+void OutputSortedAverages(float averages[], int size);
+
+int main()
+{
+    // Variable declarations
+    int m = AskForMatrixDimension("Enter number of rows: ");
+    int n = AskForMatrixDimension("Enter number of columns: ");
+    int matrixA[m][n];
+    float averages[m];
+
+    // Function calls
+    AskForMatrixValues(n, m, matrixA, "Matrix A:");
+    GetAverageOfRows(m, n, matrixA, averages);
+    SortArray(averages, m);
+    OutputSortedAverages(averages, m);
+
+    return 0;
+}
+
+// Function to ask for matrix dimensions
+int AskForMatrixDimension(char* message) {
+    int dimension;
+    printf("%s", message);
+    scanf("%d", &dimension);
+    return dimension;
+}
+
+// Function to ask for matrix values
+void AskForMatrixValues(int n, int m, int matrixA[][n], char* message) {
+    printf("%s\n", message);
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("Enter value for [%d][%d]: ", i, j);
+            scanf("%d", &matrixA[i][j]);
+        }
+    }
+}
+
+// Function to calculate the average of each row
+void GetAverageOfRows(int m, int n, int matrixA[][n], float averages[]) {
+    for (int i = 0; i < m; i++) {
+        float sum = 0;
+        for (int j = 0; j < n; j++) {
+            sum += matrixA[i][j];
+        }
+        averages[i] = sum / n;
+    }
+}
+
+// Function to sort the averages in decreasing order
+void SortArray(float arr[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] < arr[j + 1]) { // Change to < for decreasing order
+                float temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+// Function to output sorted averages
+void OutputSortedAverages(float averages[], int size) {
+    printf("Sorted Averages in Decreasing Order:\n");
+    for (int i = 0; i < size; i++) {
+        printf("%.2f ", averages[i]);
+    }
+    printf("\n");
+}
