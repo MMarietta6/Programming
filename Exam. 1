@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ROWS 3
+#define COLUMNS 4
+
+// Prototypes
+int InputOfN(char[]);
+void GenerateMatrix(int A[ROWS][COLUMNS], int maxValue);
+void FindSumOfColumn(int A[ROWS][COLUMNS], int N, int sum[COLUMNS]);
+void OutputSums(int sum[COLUMNS]);
+void DisplayMatrix(int A[ROWS][COLUMNS]);
+
+// Main function
+int main() {
+    // Variable declarations
+    int N;
+    int A[ROWS][COLUMNS]; // Declare the matrix
+    int sum[COLUMNS] = {0}; // Initialize sums for each column
+
+    // Function calls
+    N = InputOfN("Enter N, the largest number that will be added to the sum: ");
+    
+    // Generate the matrix with random values
+    GenerateMatrix(A, N); // Generate matrix with values less than N
+
+    // Display the generated matrix
+    DisplayMatrix(A);
+
+    // Find sums of columns based on the condition
+    FindSumOfColumn(A, N, sum); 
+    // Output sums
+    OutputSums(sum); 
+
+    return 0;
+}
+
+// Function to input N
+int InputOfN(char message[]) {
+    int N;
+    printf("%s", message);
+    scanf("%d", &N); // Read the value of N
+    return N;
+}
+
+// Function to generate a matrix with random values
+void GenerateMatrix(int A[ROWS][COLUMNS], int maxValue) {
+    srand(time(NULL)); // Seed the random number generator
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            A[i][j] = rand() % maxValue; // Fill the matrix with random values less than maxValue
+        }
+    }
+}
+
+// Function to find the sum of elements in each column that are less than N
+void FindSumOfColumn(int A[ROWS][COLUMNS], int N, int sum[COLUMNS]) {
+    for (int j = 0; j < COLUMNS; j++) { // Iterate over each column
+        for (int i = 0; i < ROWS; i++) { // Iterate over each row
+            if (A[i][j] < N) { // Check if the element is less than N
+                sum[j] += A[i][j]; // Add to the sum if the condition is met
+            }
+        }
+    }
+}
+
+// Function to output the sums for each column
+void OutputSums(int sum[COLUMNS]) {
+    printf("Sums of elements less than N for each column:\n");
+    for (int j = 0; j < COLUMNS; j++) {
+        printf("Sum of column %d: %d\n", j, sum[j]); // Print the sum for each column
+    }
+}
+
+// Function to display the generated matrix
+void DisplayMatrix(int A[ROWS][COLUMNS]) {
+    printf("Generated Matrix:\n");
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+            printf("%d ", A[i][j]); // Print each element of the matrix
+        }
+        printf("\n"); // New line after each row
+    }
+}
