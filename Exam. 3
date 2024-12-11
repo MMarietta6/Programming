@@ -1,0 +1,5 @@
+Teooria ülesanne ÜL 3.
+srand() funktsioon on C (ja C++) programmeerimiskeeles ja see asub raamatukogus <stdlib.h> (C). 
+See on mõeldud juhuslike arvu generaatori algväärtuse seadmiseks. See võimaldab rand() funktsioonil genereerida erinevaid
+juhuslikke arve igal programmi käivitamisel. See funktsioon nõuab ühte argumenti, mis on tüüpi 'unsigned int',
+ja tavaliselt kasutatakse selleks 'time(NULL)' funktsiooni, et saada praegune aeg, mis tagab, et algväärtus on igal käivitamisel erinev.
